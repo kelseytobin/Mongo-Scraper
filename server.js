@@ -2,45 +2,52 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var http = require('http'); // For serving a basic web page.
+var exphbs = require("express-handlebars");
+require("dotenv").config();
 
+//scraping tools
 var axios = require("axios");
 var cheerio = require("cheerio");
 
-// Require all models
+//require all models
 var db = require("./models");
 
+//set the port
 var PORT = process.env.PORT || 3000;
 
-// Initialize Express
+//initialize Express
 var app = express();
 
-// Use morgan logger for logging requests
+//use morgan logger for logging requests
 app.use(logger("dev"));
-// Parse request body as JSON
+// parse request body as JSON
 app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
-// Make public a static folder
+//make public a static folder
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
+//Handlebars
+app.engine(
+    "handlebars",
+    exphbs({
+        defaultLayout: "main"
+    })
+);
+app.set("view engine", "handlebars");
 
-// var MONGODB_URI = process.env.MONGODB_URI || ("mongodb://localhost/articles", { useNewUrlParser: true });
+//original connection to mongo that produced error
+//var MONGODB_URI = process.env.MONGODB_URI || ("mongodb://localhost/articles", { useNewUrlParser: true });
+//mongoose.connect(MONGODB_URI);
 
-// mongoose.connect(MONGODB_URI);
 
-
-// Here we find an appropriate database to connect to, defaulting to
-// localhost if we don't find one.
+//second connection string that works
 var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     'mongodb://localhost/nytimesarticles';
 
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
 mongoose.connect(uristring, {
     useNewUrlParser: true
 }, function (err, res) {
@@ -54,25 +61,38 @@ mongoose.connect(uristring, {
 
 //Routes
 //=======================================================================================================================
+app.get("/", function(req, res) {
+    db.Article.find({})
+    .then(function(dbArticle) {
+        // var hbsobj = {
+        //     article: dbArticle
+        // };
+        res.render("index")
+    })
+    .catch(function(err) {
+        res.json(err);
+    })
+});
+
 app.get("/scrape", function (req, res) {
 
-    axios.get("http://www.nytimes.com/").then(function (response) {
+    axios.get("https://buckrail.com/").then(function (response) {
 
         var $ = cheerio.load(response.data);
-          console.log(response.data)
+        //   console.log(response.data)
 
 
-        $("article").each(function (i, element) {
+        $("header").each(function (i, element) {
 
             var result = {};
 
             // Add the text and href of every link, and save them as properties of the result object
             result.title = $(this)
-                .children("h2")
+                .children("h5")
                 .text();
-            result.summary = $(this)
-                .children("p")
-                .text();
+            // result.summary = $(this)
+            //     .children("p")
+            //     .text();
             result.link = $(this)
                 .children("a")
                 .attr("href");
@@ -87,6 +107,8 @@ app.get("/scrape", function (req, res) {
 
                     console.log(err);
                 });
+            
+            console.log(result);
         });
 
         // Send a message to the client
