@@ -7,7 +7,8 @@ var ArticleSchema = new Schema({
   
   title: {
     type: String,
-    // required: true
+    required: true,
+    unique: true
   },
 
 //   summary: {
@@ -17,7 +18,8 @@ var ArticleSchema = new Schema({
   
   link: {
     type: String,
-    // required: true
+    required: true,
+    unique: true
   },
   
   note: {
