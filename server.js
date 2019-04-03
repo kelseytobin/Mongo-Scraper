@@ -46,7 +46,7 @@ app.set("view engine", "handlebars");
 var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
-    'mongodb://localhost/nytimesarticles';
+    'mongodb://localhost/buckrail';
 
 mongoose.connect(uristring, {
     useNewUrlParser: true
@@ -62,12 +62,12 @@ mongoose.connect(uristring, {
 //Routes
 //=======================================================================================================================
 app.get("/", function(req, res) {
-    
+
     db.Article.find({})
     .then(function(dbArticle) {
-        // var hbsobj = {
-        //     article: dbArticle
-        // };
+        var hbsobj = {
+            article: dbArticle
+        };
         res.render("index")
     })
     .catch(function(err) {
