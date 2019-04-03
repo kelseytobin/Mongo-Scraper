@@ -62,6 +62,7 @@ mongoose.connect(uristring, {
 //Routes
 //=======================================================================================================================
 app.get("/", function(req, res) {
+    
     db.Article.find({})
     .then(function(dbArticle) {
         // var hbsobj = {
@@ -94,6 +95,7 @@ app.get("/scrape", function (req, res) {
             //     .children("p")
             //     .text();
             result.link = $(this)
+                .children("h5")
                 .children("a")
                 .attr("href");
 
@@ -108,11 +110,12 @@ app.get("/scrape", function (req, res) {
                     console.log(err);
                 });
             
-            console.log(result);
+            // console.log(result);
+            console.log(result.link);
         });
 
         // Send a message to the client
-        res.send("Scrape Complete");
+        res.redirect("/");
     });
 });
 
@@ -173,8 +176,6 @@ app.post("/articles/:id", function (req, res) {
             res.json(err);
         });
 });
-
-
 
 
 

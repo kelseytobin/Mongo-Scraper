@@ -1,13 +1,73 @@
-// Grab the articles as a json
+//grab articles as JSON and populate into individual cards
 $.getJSON("/articles", function(data) {
-    // For each one
-    for (var i = 0; i < data.length; i++) {
-      // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "</p>");
-    //   $("#articles").append("<a href='" + data[i].link + "</a>");
-    }
+  data.forEach(item => {
+    var id = item._id;
+    var title = item.title;
+    var link = item.link;
+
+    console.log(id, title, link);
+
+    var itemCard = $("<div class='card'>");
+    var itemContent = $("<div class='card-content' id='itemContent'>");
+    var itemTitle = $("<span class='card-title' id='itemTitle'>").text(title);
+    var itemLink = $("<a target='_blank'>").text("Get the Full Story");
+    itemLink.attr("href", link);
+
+    //add content to the cards
+    itemContent.append(itemTitle, itemLink);
+    itemCard.append(itemContent);
+
+    //append to html
+    $("#articles").append(itemCard);
   });
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Grab the articles as a json
+// $.getJSON("/articles", function(data) {
+//   $("#articles").empty();
+//     // For each one
+//     for (var i = 0; i < data.length; i++) {
+//       // Display the apropos information on the page
+//       $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "</p>");
+//       $("#articles").append("<a href='" + data[i].link + "</a>");
+//     }
+//   });
   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 //   // Whenever someone clicks a p tag
 //   $(document).on("click", "p", function() {
