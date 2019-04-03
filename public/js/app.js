@@ -12,7 +12,7 @@ $.getJSON("/articles", function(data) {
     var itemTitle = $("<span class='card-title' id='itemTitle'>").text(title);
     var itemLink = $("<a target='_blank'>").text("Read the Article");
     itemLink.attr("href", link);
-    var itemBtn = $("<a class='btn-floating btn-medium waves-effect waves-light red'><i class='material-icons'>add</i></a>");
+    var itemBtn = $("<a id='addBtn' class='btn-floating btn-medium waves-effect waves-light red'><i class='material-icons'>add</i></a>");
 
     
 
