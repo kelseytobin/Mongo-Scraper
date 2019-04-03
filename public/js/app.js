@@ -10,7 +10,7 @@ $.getJSON("/articles", function(data) {
     var itemCard = $("<div class='card'>");
     var itemContent = $("<div class='card-content' id='itemContent'>");
     var itemTitle = $("<span class='card-title' id='itemTitle'>").text(title);
-    var itemLink = $("<a target='_blank'>").text("Get the Full Story");
+    var itemLink = $("<a target='_blank'>").text("Read the Article");
     itemLink.attr("href", link);
 
     //add content to the cards
