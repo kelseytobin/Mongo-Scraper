@@ -58,8 +58,10 @@ app.set("view engine", "handlebars");
 //     }
 // });
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/buckrail";
-mongoose.connect(MONGODB_URI);
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/buckrail";
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true
+});
 
 //Routes
 //=======================================================================================================================
@@ -70,7 +72,7 @@ app.get("/", function(req, res) {
         var hbsobj = {
             article: dbArticle
         };
-        res.render("index")
+        res.render("index", hbsobj)
     })
     .catch(function(err) {
         res.json(err);

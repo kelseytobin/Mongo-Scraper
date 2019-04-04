@@ -1,29 +1,35 @@
-//grab articles as JSON and populate into individual cards
-$.getJSON("/articles", function(data) {
-  data.forEach(item => {
-    var id = item._id;
-    var title = item.title;
-    var link = item.link;
+$(document).ready(function() {
 
-    console.log(id, title, link);
+  //grab articles as JSON and populate into individual cards
+  $.getJSON("/articles", function(data) {
+    data.forEach(item => {
+      var id = item._id;
+      var title = item.title;
+      var link = item.link;
+  
+      console.log(id, title, link);
+  
+      var itemCard = $("<div class='card'>");
+      var itemContent = $("<div class='card-content' id='itemContent'>");
+      var itemTitle = $("<span class='card-title' id='itemTitle'>").text(title);
+      var itemLink = $("<a target='_blank'>").text("Read the Article");
+      itemLink.attr("href", link);
+      var itemBtn = $("<a id='addBtn' class='btn-floating btn-medium waves-effect waves-light red'><i class='material-icons'>add</i></a>");
+  
+      //add content to the cards
+      itemContent.append(itemTitle, itemLink, itemBtn);
+      itemCard.append(itemContent);
+  
+      //append to html
+      $("#articles").append(itemCard);
+    });
+  })
+  
+  //enable click functionality on scrape new articles button
 
-    var itemCard = $("<div class='card'>");
-    var itemContent = $("<div class='card-content' id='itemContent'>");
-    var itemTitle = $("<span class='card-title' id='itemTitle'>").text(title);
-    var itemLink = $("<a target='_blank'>").text("Read the Article");
-    itemLink.attr("href", link);
-    var itemBtn = $("<a id='addBtn' class='btn-floating btn-medium waves-effect waves-light red'><i class='material-icons'>add</i></a>");
+//end document.ready
+});
 
-    
-
-    //add content to the cards
-    itemContent.append(itemTitle, itemLink, itemBtn);
-    itemCard.append(itemContent);
-
-    //append to html
-    $("#articles").append(itemCard);
-  });
-})
 
 
 
