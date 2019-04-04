@@ -43,21 +43,23 @@ app.set("view engine", "handlebars");
 
 
 //second connection string that works
-var uristring =
-    process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL ||
-    'mongodb://localhost/buckrail';
+// var uristring =
+//     process.env.MONGOLAB_URI ||
+//     process.env.MONGOHQ_URL ||
+//     'mongodb://localhost/buckrail';
 
-mongoose.connect(uristring, {
-    useNewUrlParser: true
-}, function (err, res) {
-    if (err) {
-        console.log('ERROR connecting to: ' + uristring + '. ' + err);
-    } else {
-        console.log('Succeeded connected to: ' + uristring);
-    }
-});
+// mongoose.connect(uristring, {
+//     useNewUrlParser: true
+// }, function (err, res) {
+//     if (err) {
+//         console.log('ERROR connecting to: ' + uristring + '. ' + err);
+//     } else {
+//         console.log('Succeeded connected to: ' + uristring);
+//     }
+// });
 
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/buckrail";
+mongoose.connect(MONGODB_URI);
 
 //Routes
 //=======================================================================================================================
